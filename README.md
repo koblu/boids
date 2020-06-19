@@ -8,7 +8,7 @@ Boids are a simple example of emergent phenomenon. They were developed by Craig 
 2. Try to match other boids direction (Alignment)
 3. Try to stay with the flock (Cohesion)  
 
-From these few rules, you get emergent phenomenon. Flock and fly in patterns
+From these few rules, you get emergent flocking phenomenon.
 
 ## Compilation
 
