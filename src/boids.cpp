@@ -1,5 +1,4 @@
 #include "boids.hpp"
-#include "point.hpp"
 #include <random>
 #include <cmath>
 #include <cstdio>
@@ -7,30 +6,52 @@
 
 using namespace Boids;
 using namespace std;
+/*!
+    @brief Enforces torus-like geometry
+    @param x_bound is the farthest you can go in the x-direction
+    @param y_bound is the farthest you can go in the y-direction
+*/
+void Position::BoundsCheck(double x_bound, double y_bound) {
+    if (x > x_bound) x = 0;
+    else if (x < 0)  x = x_bound;
+    if (y > y_bound) y = 0;
+    else if (y < 0)  y = y_bound;
+}
 
+/*!
+    @brief Normalizes a Direction vector
+*/
+void Direction::Normalize() {
+    *this /= sqrt(x*x + y*y);
+}
+
+/*!
+    @brief Updates a single Boid by a t number of timesteps
+    @param t is the number of timesteps travelled in a given position
+*/
 void Boid::Update(unsigned int t){
     _UpdateDir();
     pos += (dir * speed);
-    _BoundsCheck();
+    pos.BoundsCheck(swarm.arena.x_bound, swarm.arena.y_bound);
 };
 
-
-void Boid::_BoundsCheck() {
-    if (pos.x > swarm.arena.x_bound) pos.x = 0;
-    else if (pos.x < 0) pos.x = swarm.arena.x_bound;
-    if (pos.y > swarm.arena.y_bound) pos.y = 0;
-    else if (pos.y < 0) pos.y = swarm.arena.y_bound;
-}
-
+/*!
+    @brief Calculates a single Boid's distance to another Boid.
+    @param b is another Boid object
+*/
 double Boid::_Dist(Boid b) {
     return sqrt(pow(pos.x-b.pos.x,2)+pow(pos.y-b.pos.y,2));
 }
 
+/*!
+    @brief Updates a single Boid based on the separation, alignment, and cohesion principles
+*/
 void Boid::_UpdateDir() {
-    Point avg_sep;
-    Point avg_dir;
-    Point center;
-    Point to_center;
+    //We're deriving direction here
+    Direction avg_sep;
+    Direction avg_dir;
+    Direction center;
+    Direction to_center;
     int i;
     
     for (auto& boid : swarm.pop) {
@@ -41,15 +62,15 @@ void Boid::_UpdateDir() {
     if (local.size() > 0) {
 
         //Separation - We'll take into consideration the average of the distance vectors from them to us.
-        avg_sep = Point(0,0);
+        avg_sep = Direction(0,0);
         for(int i = 0; i < (int) local.size(); i++) {
             avg_sep += (pos + (local[i]->getPosition() * -1));
         }
         if (avg_sep.x == 0 && avg_sep.y == 0) {
-            avg_sep = Point(0,0);
+            avg_sep = Direction(0,0);
         } else {
             avg_sep /= (int) local.size();
-            avg_sep /= sqrt((pow(avg_sep.x,2) + pow(avg_sep.y,2)));
+            avg_sep.Normalize();
         }
 
 
@@ -58,6 +79,7 @@ void Boid::_UpdateDir() {
             avg_dir += local[i]->dir;
         }
         avg_dir /= (int) local.size();
+        avg_dir.Normalize();
         
         //Cohesion - We want to align towards the center of our flock
         for(int i = 0; i < (int) local.size(); i++) {
@@ -65,7 +87,7 @@ void Boid::_UpdateDir() {
         }
         center += pos;
         center /= (int) local.size();
-        to_center = center + (pos * -1);
+        to_center = center - pos;
 
         dir += (avg_sep + avg_dir + to_center);
         //std::cout << avg_sep.x << ":" << avg_sep.y << std::endl;
@@ -73,15 +95,38 @@ void Boid::_UpdateDir() {
     }
 }
 
-inline Point Boid::getPosition() const{
+/*!
+    @brief Position Accessor
+*/
+inline Position Boid::getPosition() const {
     return pos;
 }
 
-Boid::Boid(class Swarm &s, double x, double y, double dir_x, double _speed): swarm(s), pos(Point(x,y)), speed(_speed) {
-    dir = Point(dir_x, sqrt(1-pow(dir_x, 2)));
+/*!
+    @brief Direction Accessor
+*/
+inline Direction Boid::getDirection() const {
+    return dir;
 }
 
+/*!
+    @brief Boid constructor
+    @param s is the Swarm object to which the Boid belongs
+    @param x is the Boid's x coord
+    @param y is the Boid's y coord
+    @param dir_x is the x component of the direction
+    @param _speed is the speed of the Boid
+*/
+Boid::Boid(class Swarm &s, double x, double y, double dir_x, double _speed): swarm(s), pos(Position(x,y)), speed(_speed) {
+    dir = Direction(dir_x, sqrt(1-pow(dir_x, 2)));
+}
 
+/*! 
+    @brief Swarm constructor
+    @param a is the Arena object within which the Swarm "resides"
+    @param _pop_size is the size of the population
+    @param seed is the seed to a random generator
+*/
 Swarm::Swarm(class Arena &a, unsigned int _pop_size, int seed): arena(a), pop_size(_pop_size) {
     int i;
     default_random_engine gen;
@@ -94,6 +139,12 @@ Swarm::Swarm(class Arena &a, unsigned int _pop_size, int seed): arena(a), pop_si
         pop.push_back(Boid(*this, x_dist(gen), y_dist(gen), dir_dist(gen), 1));
     }
 }
+
+/*!
+    @brief Runs the Swarm for a given number of timesteps
+    @params timesteps is the number of timesteps to be taken in a run
+    @param print specifies whether or not to print the Boid's current states after each run.
+*/
 void Swarm::Run(unsigned int timesteps, bool print) {
     int i;
     for(i = 0; i < timesteps; i++) {
@@ -104,9 +155,12 @@ void Swarm::Run(unsigned int timesteps, bool print) {
     }
 }
 
+/*!
+    @brief Prints the positions of all Boid objects in the Swarm in a JSON-decodable format
+*/
 void Swarm::Print() {
     int i;
-    Point tmp;
+    Position tmp;
     printf("[");
     for (i = 0; i < pop_size; i++) {
         tmp = pop[i].getPosition();
@@ -116,4 +170,9 @@ void Swarm::Print() {
     printf("]\n");
 }
 
+/*!
+    @brief Arena constructor
+    @param _x_bound is the farthest an object can go in the x-direction
+    @param _y_bound is the farthest an object can go in the y-direction
+*/
 Arena::Arena(double _x_bound, double _y_bound): x_bound(_x_bound), y_bound(_y_bound) {}

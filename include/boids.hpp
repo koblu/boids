@@ -1,20 +1,22 @@
 /*
     Boid Simulator
+    Written by: Kody Bloodworth
 */
 #pragma once
 #include <vector>
-#include "point.hpp"
+#include "valuepair.hpp"
 namespace Boids
 {
-    struct Triangle
-    {
-        Point points[3];
+    struct Position : public ValuePair {
+        Position() {};
+        Position(double x, double y) : ValuePair(x, y){};
+        void BoundsCheck(double x_bound, double y_bound);
     };
 
-    struct Obstacle
-    {
-        double radius;
-        Point pos;
+    struct Direction : public ValuePair {
+        Direction() {};
+        Direction(double x, double y) : ValuePair(x, y){};
+        void Normalize();
     };
 
     struct Boid
@@ -24,12 +26,12 @@ namespace Boids
         double speed;
         class Swarm &swarm;
         void Update(unsigned int t);
-        Point getPosition() const;
-        Point pos;
-        Point dir;
+        Position getPosition() const;
+        Direction getDirection() const;
+        Position pos;
+        Direction dir;
 
         protected:
-        void _BoundsCheck();
         void _UpdateDir();
         double _Dist(Boid b);
         std::vector<Boid*> local;
@@ -54,7 +56,7 @@ namespace Boids
         friend class Swarm;
         protected:
             double x_bound, y_bound;
-            std::vector<Obstacle> obstacles;
+            /*TODO: Add Obstacles List*/
 
         public:
             Arena(double x_bound, double y_bound);
