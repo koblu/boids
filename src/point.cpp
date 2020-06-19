@@ -12,6 +12,10 @@ void Point::operator*= (const double l) {
     x *= l;
     y *= l;
 }
+void Point::operator/= (const double l) {
+    x /= l;
+    y /= l;
+}
 Point Point::operator+ (const Point p) {
     Point rv;
     rv.x = x + p.x;
@@ -22,5 +26,14 @@ Point Point::operator* (const double l) {
     Point rv;
     rv.x = x * l;
     rv.y = y * l;
+    return rv;
+}
+Point Point::operator/ (const double l) {
+    if (l == 0.0) {
+        throw("Bad Param - Cant Divide By Zero");
+    }
+    Point rv;
+    rv.x = x / l;
+    rv.y = y / l;
     return rv;
 }
