@@ -18,12 +18,23 @@ void Position::BoundsCheck(double x_bound, double y_bound) {
     else if (y < 0)  y = y_bound;
 }
 
+void Position::operator= (const ValuePair vp) {
+    x = vp.x;
+    y = vp.y;
+}
+
 /*!
     @brief Normalizes a Direction vector
 */
 void Direction::Normalize() {
     *this /= sqrt(x*x + y*y);
 }
+
+void Direction::operator= (const ValuePair vp) {
+    x = vp.x;
+    y = vp.y;
+}
+
 
 /*!
     @brief Updates a single Boid by a t number of timesteps

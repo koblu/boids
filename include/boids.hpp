@@ -11,12 +11,14 @@ namespace Boids
         Position() {};
         Position(double x, double y) : ValuePair(x, y){};
         void BoundsCheck(double x_bound, double y_bound);
+        void operator= (const ValuePair vp);
     };
 
     struct Direction : public ValuePair {
         Direction() {};
         Direction(double x, double y) : ValuePair(x, y){};
         void Normalize();
+        void operator= (const ValuePair vp);
     };
 
     struct Boid
