@@ -11,7 +11,7 @@ Boids are a simple example of emergent phenomenon. They were developed by Craig 
 From these few rules, you get emergent flocking phenomenon.
 
 ## Compilation
-run `make all` to create the executable `bin/boids`
+run `make all` to create the executable `bin/boids`  
 run `make clean` to clean out these exectables
 
 
