@@ -50,3 +50,20 @@ ValuePair ValuePair::operator/ (const double l) {
     rv.y = y / l;
     return rv;
 }
+
+double ValuePair::GetX() const {
+    return x;
+}
+double ValuePair::GetY() const{
+    return y;
+}
+void ValuePair::SetX(double _x) {
+    x = _x;
+}
+void ValuePair::SetY(double _y) {
+    y = _y;
+}
+void ValuePair::Set(double _x, double _y) {
+    x = _x;
+    y = _y;
+}

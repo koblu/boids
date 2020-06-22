@@ -1,7 +1,7 @@
 INCLUDE = include
 BIN = bin
 SRC = src
-FLAGS = -std=c++11 -I$(INCLUDE)
+FLAGS = -O3 -std=c++11 -I$(INCLUDE)
 
 all: $(BIN)/boids
 

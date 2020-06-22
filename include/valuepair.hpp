@@ -1,8 +1,16 @@
 #pragma once
 namespace Boids {
-    struct ValuePair
+    class ValuePair
     {
+        friend class Position;
+        friend class Direction;
         double x, y;
+        public:
+        double GetX() const;
+        double GetY() const;
+        void SetX(double _x);
+        void SetY(double _y);
+        void Set(double _x, double _y);
         ValuePair();
         ValuePair(double x, double y);
         void operator+= (const ValuePair p);
