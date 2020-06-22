@@ -8,7 +8,8 @@
 #include "valuepair.hpp"
 namespace Boids
 {
-    /*  @class Position 
+    /*!
+        @class Position 
         @brief A class that describes a position within a torus-geometry
             (inherits ValuePair)
     */
@@ -16,12 +17,11 @@ namespace Boids
         public:
         Position() : ValuePair(0,0) {};
         Position(double x, double y) : ValuePair(x, y){};
-        void BoundsCheck(double x_bound, double y_bound);
         void BoundsCheck(const ValuePair& bounds);
         void operator= (const ValuePair vp);
     };
 
-    /*
+    /*!
         @class Direction 
         @brief a class that is meant to describe a direction vector. 
     */
@@ -33,7 +33,7 @@ namespace Boids
         void operator= (const ValuePair vp);
     };
 
-    /* 
+    /*! 
         @class Boid
         @brief The main object of this simulator, a boid moves in a geometric area
     */
@@ -56,7 +56,7 @@ namespace Boids
         void _UpdateDir();
     };
 
-    /*
+    /*!
         @class Swarm
         @brief Swarms are groups of boids. Boids make decisions based on others Boids in their swarm
     */
@@ -81,7 +81,7 @@ namespace Boids
             void Print();
     };
 
-    /*
+    /*!
         @class Arena
         @brief An Arena object contains essential information about the navigatable world
     */
@@ -98,4 +98,4 @@ namespace Boids
             const ValuePair& GetBounds() const;
             Arena(double x_bound, double y_bound);
     };
-}; // namespace Boids
+}; 

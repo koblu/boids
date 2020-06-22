@@ -1,6 +1,6 @@
-/* 
-    Boids Simualtor Source
-    Author: Kody Bloodworth
+/*! 
+    @brief Boids Simualtor Source
+    @author Kody Bloodworth
 */
 
 #include "boids.hpp"
@@ -15,20 +15,19 @@ using namespace Boids;
 using namespace std;
 /*!
     @brief Enforces torus-like geometry
-    @param x_bound is the farthest you can go in the x-direction
-    @param y_bound is the farthest you can go in the y-direction
+    @param bounds is a ValuePair that defines the boundaries of the Arena
 */
-void Position::BoundsCheck(double x_bound, double y_bound) {
-    if (x > x_bound) x = 0;
-    else if (x < 0)  x = x_bound;
-    if (y > y_bound) y = 0;
-    else if (y < 0)  y = y_bound;
-}
 
 void Position::BoundsCheck(const ValuePair& bounds) {
-    BoundsCheck(bounds.GetX(), bounds.GetY());
+    if (x > bounds.GetX()) x = 0;
+    else if (x < 0)  x = bounds.GetX();
+    if (y > bounds.GetY()) y = 0;
+    else if (y < 0)  y = bounds.GetY();
 }
 
+/*
+    Convert ValuePair to Direction
+*/
 void Position::operator= (const ValuePair vp) {
     x = vp.GetX();
     y = vp.GetY();
@@ -41,6 +40,9 @@ void Direction::Normalize() {
     *this /= sqrt(x*x + y*y);
 }
 
+/*
+    Convert ValuePair to Direction
+*/
 void Direction::operator= (const ValuePair vp) {
     x = vp.GetX();
     y = vp.GetY();

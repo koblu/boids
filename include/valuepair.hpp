@@ -1,10 +1,17 @@
 #pragma once
+
+/*!
+    @class ValuePair
+    @brief A parent class inherited by the Position and Direction classes.
+*/
+
 namespace Boids {
     class ValuePair
     {
         friend class Position;
         friend class Direction;
         double x, y;
+        
         public:
         double GetX() const;
         double GetY() const;

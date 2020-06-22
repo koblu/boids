@@ -50,7 +50,7 @@ example:
 
 ## Current Issues
 
-As this is a code sample, there are smaller details that have not been touched. As it stands currently, Boids determine direction based on a simple average of the three properties described above. This can cause issues like a Boid "deciding" to hit another Boid because it would rather face the center point. For large population sizes and large radius sizes, the efficiency of this program drops drastically. However, as this is a code sample, these issues are not drastic.
+As this is a code sample, there are smaller details that have not been touched. As it stands currently, Boids determine direction based on a simple average of the three properties described above. This can cause issues like a Boid "deciding" to hit another Boid because it would rather face the center point. For large population sizes and large radius sizes, the efficiency of this program drops drastically. However, as this is a code sample, these issues are not drastic. If you find any other major issues, I invite you to bring them to bring them to my attention.
 
 
 

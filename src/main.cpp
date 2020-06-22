@@ -1,3 +1,11 @@
+/*
+    main.cpp
+    Constructs and runs a Boid simulator
+    
+    Kody Bloodworth
+    June 22 2020
+*/
+
 #include "boids.hpp"
 #include <iostream>
 #include <string>
