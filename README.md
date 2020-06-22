@@ -1,7 +1,7 @@
 # boids
 A code sample for a simple "boids" simulator.
 
-As a code sample, it show cases:
+As a code sample, this repo showcases:
 1. OOP Design (Inheritance, Polymorphism, etc.)
 2. Documentation
 3. A basic, Makefile-based build system
