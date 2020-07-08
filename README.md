@@ -47,7 +47,7 @@ The `bin/boids` executable generates a series of one-line, JSON-parseable arrays
 ## Visualizer
 Boid behavior is best seen on a large scale - not through numbers. There exists a very basic visualization tool built with the LöVE2D graphics framework. LöVE2D can be installed [here](https://love2d.org/).
 
-To run this viz tool, simply take pipe the output of `bin/boids` to the viz tool.
+To run this viz tool, simply pipe the output of `bin/boids` to the viz tool.
 
 example:
 ```
